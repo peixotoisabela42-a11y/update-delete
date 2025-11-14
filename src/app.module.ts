@@ -4,6 +4,8 @@ import { AppService } from './app.service';
 import { ProductsModule } from './products/products.module';
 import { CustomersModule } from './customers/customers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { Customer } from './customers/customers.entity';
+import { Product } from './products/products.entity';
 
 @Module({
   imports: [
@@ -14,9 +16,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'root',
       password: '',
       database: 'curso',
-      autoLoadEntities: true,
-      synchronize: false,  // importante! false em produção
-      logging: true,
+      entities:[Product,Customer],
+      synchronize: true  // importante! false em produção
+    
     }),
     ProductsModule, CustomersModule],
   controllers: [AppController],

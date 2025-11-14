@@ -6,24 +6,18 @@ import { Repository } from 'typeorm';
 
 @Injectable()
 export class ProductsService {
-    private products: Array<any>;
-    
+
     constructor(
+
         @InjectRepository(Product)
         private productsRepository: Repository<Product>
     ) {
-        this.products = [
-        {
-            "id": 1,
-            "name": "Biscoito"
-        },
-        {
-            "id": 2,
-            "name": "Morango"
-        }
-        ]
 
     }
+
+    
+    
+ 
 
     findAll() {
         return this.productsRepository.find();
@@ -38,27 +32,18 @@ export class ProductsService {
         };
     }
 
-    update(id: number, product: UpsertProductDTO) {
-        // [ 1, 2, 3, 4 ]
-        const index = this.products.findIndex((p) => p.id == id);
-        if(index == -1) {
-            throw new NotFoundException('Produto não encontrado!')
-        }
-        this.products[index] = {
-            'id': this.products[index].id,
-            // spread
-            ...product
-        }
-        
-        return {
-            "message": "Produto Atualizado!"
-        };
-    }
+    async update(id: number, productData: UpsertProductDTO): Promise<Product> {
+        const product = await this.productsRepository.findOne({ where: { id } });
 
-    delete(id: number) {
-        this.products = this.products.filter((p) => p.id != id);
-        return {
-            "message": "Produto removido!"
+        if (!product) {
+            throw new NotFoundException(`Produto com ID ${id} não encontrado.`);
         }
+
+        this.productsRepository.merge(product, productData);
+
+        return this.productsRepository.save(product);
+    }
+    delete(id: number) {
+        return this.productsRepository.delete(id);
     }
 }

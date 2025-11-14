@@ -9,5 +9,5 @@ export class UpsertDTO {
     email: string;
 
     @IsNotEmpty()
-    idade: number;
+    age: number;
 }

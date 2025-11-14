@@ -1,37 +1,54 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { UpsertDTO } from "./dto/upsert.dto";
+import { Customer } from "./customers.entity";
+import { Repository } from "typeorm";
+import { InjectRepository } from "@nestjs/typeorm";
 
 @Injectable()
 export class CustomersService {
-   private customers: Array<any>;
-   // método especial - ele é chamado na criação
-   constructor() {
-     this.customers = [
-        {
-            "id": 1,
-            "nome": "Félix",
-            "email": "felix@gmail.com",
-            "idade": 18
+
+    constructor(
+
+        @InjectRepository(Customer)
+        private customersRepository: Repository<Customer>
+    ) {
+
+    }
+
+
+    get() {
+        return this.customersRepository.find();
+    }
+
+
+    async create(customers: UpsertDTO) {
+
+        const newcustomer = this.customersRepository.create(customers);
+
+        return this.customersRepository.save(newcustomer);
+    }
+
+
+    async update(id: number, customersData: UpsertDTO): Promise<Customer> {
+
+        const customer = await this.customersRepository.findOne({ where: { id } });
+
+
+        if (!customer) {
+
+            throw new NotFoundException(`Cliente com ID ${id} não encontrado.`);
         }
-     ]
-   }
 
-   get() {
-    return this.customers;
-   }
 
-   create(customer: UpsertDTO) {
-     let id = 1;
-     if(this.customers.length != 0) {
-        id = this.customers[this.customers.length - 1].id + 1
-     }
-     this.customers.push({
-      "id": id,
-      ...customer
-     });
+        this.customersRepository.merge(customer, customersData);
 
-     return {
-        "message": "Salvo com sucesso"
-     };
-   }
+
+        return this.customersRepository.save(customer);
+    }
+
+
+    delete(id: number) {
+
+        return this.customersRepository.delete(id);
+    }
 }
