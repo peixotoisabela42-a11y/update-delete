@@ -6,6 +6,10 @@ import { CustomersModule } from './customers/customers.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Customer } from './customers/customers.entity';
 import { Product } from './products/products.entity';
+import { EmployeeModule } from './employee/employee.module';
+import { Employee } from './employee/entities/employee.entity';
+import { VendaModule } from './venda/venda.module';
+import { Venda } from './venda/entities/venda.entity';
 
 @Module({
   imports: [
@@ -16,11 +20,11 @@ import { Product } from './products/products.entity';
       username: 'root',
       password: '',
       database: 'curso',
-      entities:[Product,Customer],
+      entities:[Product,Venda,Customer,Employee],
       synchronize: true  // importante! false em produção
     
     }),
-    ProductsModule, CustomersModule],
+    ProductsModule, CustomersModule, EmployeeModule, VendaModule],
   controllers: [AppController],
   providers: [AppService],
 })
