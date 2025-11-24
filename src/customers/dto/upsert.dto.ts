@@ -9,5 +9,11 @@ export class UpsertDTO {
     email: string;
 
     @IsNotEmpty()
-    age: number;
+    cpf: number;
+
+    @IsNotEmpty()
+    phone: string;
+ 
+
+    
 }

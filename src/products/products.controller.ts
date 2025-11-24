@@ -16,8 +16,7 @@ export class ProductsController {
         return this.productsService.create(productBody);
     }
 
-    // localhost:3000/products/2
-    // path param
+     
     @Put(':id')
     update(@Param('id') productID: number, @Body() updateBody: UpsertProductDTO) {
         return this.productsService.update(productID, updateBody);

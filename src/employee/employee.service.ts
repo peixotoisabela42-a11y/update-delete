@@ -5,32 +5,25 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Employee } from './entities/employee.entity';
 import { Repository } from 'typeorm';
 
+
 @Injectable()
-@Injectable()
-export class EmployeeService  {
+export class EmployeeService {
 
     constructor(
 
         @InjectRepository(Employee)
-        private employeesRepository: Repository<Employee>
-    ) {
-
-    }
-
-    
-    
- 
+        private employeesRepository: Repository<Employee>) { }
 
     findAll() {
         return this.employeesRepository.find();
     }
 
     async create(employee: CreateEmployeeDto) {
-        const newProduct = this.employeesRepository.create(employee);        
-        await this.employeesRepository.save(newProduct);
-        
+        const newEmployee = this.employeesRepository.create(employee);
+        await this.employeesRepository.save(newEmployee);
+
         return {
-            "message": "fUncionário Criado!"
+            "message": "funcionário Criado!"
         };
     }
 
@@ -41,7 +34,7 @@ export class EmployeeService  {
             throw new NotFoundException(`Employee com ID ${id} não encontrado.`);
         }
 
-        this.employeesRepository.merge(employee, employeeData );
+        this.employeesRepository.merge(employee, employeeData);
 
         return this.employeesRepository.save(employee);
     }

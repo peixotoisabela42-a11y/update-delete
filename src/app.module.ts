@@ -9,7 +9,7 @@ import { Product } from './products/products.entity';
 import { EmployeeModule } from './employee/employee.module';
 import { Employee } from './employee/entities/employee.entity';
 import { VendaModule } from './venda/venda.module';
-import { Venda } from './venda/entities/venda.entity';
+import { Sale, SaleProduct } from './venda/entities/sale.entity';
 
 @Module({
   imports: [
@@ -20,7 +20,7 @@ import { Venda } from './venda/entities/venda.entity';
       username: 'root',
       password: '',
       database: 'curso',
-      entities:[Product,Venda,Customer,Employee],
+      entities:[Product,Sale,SaleProduct,Customer,Employee],
       synchronize: true  // importante! false em produção
     
     }),

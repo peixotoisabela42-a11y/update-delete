@@ -1,11 +1,17 @@
-import { IsNotEmpty, IsNumber, IsString } from "class-validator";
+import { IsNotEmpty, IsNumber } from "class-validator";
 
 export class UpsertProductDTO {
   
-    @IsNotEmpty()
-    nome: string;
+    
 
-    @IsNumber({maxDecimalPlaces: 2})
+    @IsNumber()
     @IsNotEmpty()
-    price: number;
+    preco: number;
+
+    @IsNumber()
+    @IsNotEmpty()
+    stock: number;
+
+
+ 
 }

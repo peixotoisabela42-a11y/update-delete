@@ -1,26 +1,44 @@
-import { Injectable } from '@nestjs/common';
-import { CreateVendaDto } from './dto/create-venda.dto';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { CreateItemVendaDto } from './dto/create-venda.dto';
 import { UpdateVendaDto } from './dto/update-venda.dto';
+import { Sale } from './entities/sale.entity';
+import { Repository } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+
 
 @Injectable()
 export class VendaService {
-  create(createVendaDto: CreateVendaDto) {
-    return 'This action adds a new venda';
-  }
+
+  constructor(
+
+    @InjectRepository(Sale)
+    private salesRepository: Repository<Sale>) {}
 
   findAll() {
-    return `This action returns all venda`;
+    return this.salesRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} venda`;
+  async create(sale:  CreateItemVendaDto) {
+    const newSale= this.salesRepository.create(sale);
+    await this.salesRepository.save(newSale);
+
+    return {
+      "message": "Venda Criada!"
+    };
   }
 
-  update(id: number, updateVendaDto: UpdateVendaDto) {
-    return `This action updates a #${id} venda`;
-  }
+  async update(id: number, SaleData:  UpdateVendaDto): Promise<Sale> {
+    const sale = await this.salesRepository.findOne({ where: { id } });
 
-  remove(id: number) {
-    return `This action removes a #${id} venda`;
+    if (!sale) {
+      throw new NotFoundException(`Venda com ID ${id} não encontrado.`);
+    }
+
+    this.salesRepository.merge(sale, SaleData);
+
+    return this.salesRepository.save(sale);
+  }
+  delete(id: number) {
+    return this.salesRepository.delete(id);
   }
 }

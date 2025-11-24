@@ -1,3 +1,4 @@
+import { SaleProduct } from "src/venda/entities/sale.entity";
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 
@@ -14,8 +15,14 @@ export class Employee{
     
 
     @Column({ type: 'int' })
-    age: number;
-     
+    cpf: number;
     @Column()
-    position: string;
+    phone: string;
+
+    @Column()
+    salary: number;
+
+    SaleProduct: SaleProduct;
+    fk_saleProduct: SaleProduct;
+    sale: any;
 }

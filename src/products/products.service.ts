@@ -10,23 +10,15 @@ export class ProductsService {
     constructor(
 
         @InjectRepository(Product)
-        private productsRepository: Repository<Product>
-    ) {
-
-    }
-
-    
-    
- 
-
+        private productsRepository: Repository<Product>) { }
     findAll() {
         return this.productsRepository.find();
     }
 
     async create(product: UpsertProductDTO) {
-        const newProduct = this.productsRepository.create(product);        
+        const newProduct = this.productsRepository.create(product);
         await this.productsRepository.save(newProduct);
-        
+
         return {
             "message": "Produto Criado!"
         };

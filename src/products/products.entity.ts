@@ -1,18 +1,29 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+ 
+import { SaleProduct } from "src/venda/entities/sale.entity";
 
 
-@Entity()
-export class Product{
+@Entity('product')  
+export class Product {
     @PrimaryGeneratedColumn()
     id: number;
+ 
+     
 
-    @Column()
-    nome: string;
+     
+    @Column({ type: 'text', nullable: true })
+    description: string;
+ 
+      
 
-    @Column('decimal', {precision: 10, scale: 2})
+    @Column('decimal', { precision: 10, scale: 2 })
     price: number;
 
-    @OneToMany(() => Product, product => product.id)
-    vendas: Product[];
-    
+    @Column({ default: 0 })
+    stock: number;
+
+     
+    @OneToMany(() => SaleProduct, saleProduct => saleProduct.product)
+    saleProducts: SaleProduct[];
+  
 }

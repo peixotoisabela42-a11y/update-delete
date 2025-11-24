@@ -10,16 +10,11 @@ export class CustomersService {
     constructor(
 
         @InjectRepository(Customer)
-        private customersRepository: Repository<Customer>
-    ) {
-
-    }
-
+        private customersRepository: Repository<Customer>) { }
 
     get() {
         return this.customersRepository.find();
     }
-
 
     async create(customers: UpsertDTO) {
 
@@ -28,24 +23,19 @@ export class CustomersService {
         return this.customersRepository.save(newcustomer);
     }
 
-
     async update(id: number, customersData: UpsertDTO): Promise<Customer> {
 
         const customer = await this.customersRepository.findOne({ where: { id } });
-
 
         if (!customer) {
 
             throw new NotFoundException(`Cliente com ID ${id} não encontrado.`);
         }
 
-
         this.customersRepository.merge(customer, customersData);
-
 
         return this.customersRepository.save(customer);
     }
-
 
     delete(id: number) {
 

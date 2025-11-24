@@ -1,34 +1,30 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body,   Param, Delete, Put } from '@nestjs/common';
 import { VendaService } from './venda.service';
-import { CreateVendaDto } from './dto/create-venda.dto';
+import { CreateItemVendaDto} from './dto/create-venda.dto';
 import { UpdateVendaDto } from './dto/update-venda.dto';
 
-@Controller('venda')
-export class VendaController {
-  constructor(private readonly vendaService: VendaService) {}
-
-  @Post()
-  create(@Body() createVendaDto: CreateVendaDto) {
-    return this.vendaService.create(createVendaDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.vendaService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.vendaService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateVendaDto: UpdateVendaDto) {
-    return this.vendaService.update(+id, updateVendaDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.vendaService.remove(+id);
-  }
-}
+ @Controller('sales')
+ export class VendasController {
+      constructor(private readonly vendasService: VendaService) {}
+ 
+        @Get('/')
+        findAll() {
+            return this.vendasService.findAll();
+        }
+    
+        @Post('/')
+        create(@Body() saleBody: CreateItemVendaDto) {
+            return this.vendasService.create(saleBody);
+        }
+       
+         
+        @Put(':id')
+        update(@Param('id') saleID: number,  @Body() updateBody: UpdateVendaDto) {
+            return this.vendasService.update(saleID, updateBody);
+        }
+    
+        @Delete(':id')
+        delete(@Param('id') saleID: number) {
+            return this.vendasService.delete(saleID);
+        }
+    }
